@@ -1,7 +1,6 @@
 <template>
   <div class="posts-page">
     <PostList></PostList>
-
   </div>
 </template>
 
