@@ -29,8 +29,10 @@ export default {
     AppControlInput
   },
   props: {
-    type:Object,
-    default: false
+    post: {
+      type: Object,
+      default: false
+    }
   },
   data() {
     return {
