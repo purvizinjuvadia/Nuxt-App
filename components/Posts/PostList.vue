@@ -1,25 +1,13 @@
 <template>
   <section class="post-list">
     <PostPreview
-      id="1"
+      v-for="post in posts"
+      :key="post.id"
+      :id="post.id"
       :is-admin="isAdmin"
-      thumbnail="https://codingthesmartway.com/wp-content/uploads/2017/01/02.png"
-      title="Hello there!"
-      previewText="This is my first post">
-    </PostPreview>
-    <PostPreview
-      id="2"
-      :is-admin="isAdmin"
-      thumbnail="https://codingthesmartway.com/wp-content/uploads/2017/01/02.png"
-      title="Hello there - the second time!"
-      previewText="This is my second post">
-    </PostPreview>
-    <PostPreview
-      id="3"
-      :is-admin= "isAdmin"
-      thumbnail="https://codingthesmartway.com/wp-content/uploads/2017/01/02.png"
-      title="Hello there - the third time!"
-      previewText="This is my third post">
+      :thumbnail="post.thumbnail"
+      :title="post.title"
+      :previewText="post.previewText">
     </PostPreview>
   </section>
 </template>
@@ -34,19 +22,23 @@ export default {
     isAdmin: {
       type: Boolean,
       default: false
+    },
+    posts: {
+      type: Array,
+      required: true
     }
   }
 }
 </script>
 
 <style>
-  .post-list {
-    display: flex;
-    padding: 20px;
-    box-sizing: border-box;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-  }
+.post-list {
+  display: flex;
+  padding: 20px;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
 
 </style>
