@@ -13,32 +13,12 @@ export default {
   components: {
     PostList
   },
-  asyncData(context, callback) {
-    setTimeout(() => {
-      callback(null, {
-        loadedPosts: [
-          {
-            id: "1",
-            title: "First Post",
-            previewText: "This is our first post!",
-            thumbnail: "https://codingthesmartway.com/wp-content/uploads/2017/01/02.png"
-          },
-          {
-            id: "2",
-            title: "Second Post",
-            previewText: "This is our second post!",
-            thumbnail: "https://codingthesmartway.com/wp-content/uploads/2017/01/02.png"
-          }
-        ]
-      });
-    }, 1500);
-  },
-//  data() {
-//    return {
-//      loadedPosts: []
-//    };
-//  },
-  created() {}
+  computed: {
+    loadedPosts()
+    {
+      return this.$store.getters.loadedPosts
+    }
+  }
 }
 </script>
 
