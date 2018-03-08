@@ -28,7 +28,7 @@ export default {
       .catch(e => context.error(e))
   }
 
-  }
+}
 </script>
 
 <style scoped>
