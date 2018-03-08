@@ -6,34 +6,29 @@
         <div class="post-detail">Last updated on {{ loadedPost.updatedDate }}</div>
         <div class="post-detail">Written by {{ loadedPost.author}}</div>
       </div>
-      <p>content of the post</p>
+      <p class="post-content">{{ loadedPost.content }}</p>
     </section>
     <section class="post-feedback">
-      <p class="post-content">Let me know what you think about the post, send a mail to <a href="mailto:feedback@my-awesome-domail.com">feedback@my-awesome-domain.com</a></p>
+      <p>Let me know what you think about the post, send a mail to <a href="mailto:feedback@my-awesome-domail.com">feedback@my-awesome-domain.com</a></p>
     </section>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-  asyncData(context, callback) {
-    setTimeout(() => {
-      callback(null, {
-        loadedPost: {
-          id: "1",
-          title: "First Post (ID: " + context.route.params.id + ")",
-          previewText: "This is our first post!",
-          author: "PurviZinjuvadia",
-          updatedDate: new Date(),
-          content: 'Some dummy text which is definately not the previewText',
-          thumbnail: "https://codingthesmartway.com/wp-content/uploads/2017/01/02.png"
+  asyncData(context) {
+    return axios.get('https://nuxt-blog-e22ed.firebaseio.com/posts/' + context.params.id + '.json')
+      .then(res => {
+        return {
+          loadedPost: res.data
         }
       })
-
-    }, 1000)
+      .catch(e => context.error(e))
   }
 
-}
+  }
 </script>
 
 <style scoped>
