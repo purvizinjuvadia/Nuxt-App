@@ -1,7 +1,7 @@
 <template>
   <div class="admin-post-page">
     <section class="update-form">
-      <AdminPostForm :post="loadedPost"></AdminPostForm>
+      <AdminPostForm :post="loadedPost" @submit="onSubmitted"></AdminPostForm>
     </section>
   </div>
 </template>
@@ -18,10 +18,17 @@ export default {
     return axios.get('https://nuxt-blog-e22ed.firebaseio.com/posts/' + context.params.postId + '.json')
       .then(res => {
         return {
-          loadedPost: res.data
+          loadedPost: {...res.data, id: context.params.postId }
         }
       })
       .catch(e => context.error(e))
+  },
+  methods: {
+    onSubmitted(editedPost) {
+      this.$store.dispatch("editPost", editedPost).then(() => {
+        this.$router.push("/admin/")
+      })
+    }
   }
 
 }
