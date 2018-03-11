@@ -8,15 +8,12 @@
 
 
 export default {
+  middleware: 'log',
   computed: {
     loadedPosts() {
       return this.$store.getters.loadedPosts
     }
-  },
-  /*created() {
-    this.$store.dispatch('setPosts', this.loadedPosts)
-    console.log(this.$store.getters.loadedPosts)
-  }*/
+  }
 };
 </script>
 

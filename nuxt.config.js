@@ -50,7 +50,7 @@ module.exports = {
     '@nuxtjs/axios'
   ],
   axios: {
-    baseURL: process.env.BASE_URL || 'https://nuxt-blog-e22ed.firebaseio.com'
+    baseURL: process.env.BASE_URL || 'https://nuxt-blog-e22ed.firebaseio.com',
     credentials: false
   },
 
@@ -67,11 +67,16 @@ module.exports = {
   },
 
   env: {
-    baseUrl: process.env.BASE_URL || 'https://nuxt-blog-e22ed.firebaseio.com'
+    baseUrl: process.env.BASE_URL || 'https://nuxt-blog-e22ed.firebaseio.com',
+    fbAPIKey: 'AIzaSyDAE3kkEuYTsi5UQtKo18JBIXoRiuHg-Yo'
   },
 
   transition: {
     name: 'fade',
     mode: 'out-in'
   }
+
+//  router: {
+//    middleware: 'log'
+//  }
 }
