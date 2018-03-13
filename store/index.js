@@ -9,19 +9,19 @@ const createStore = () => {
     },
     mutations: {
       setPosts(state, posts) {
-        state.loadedPosts = posts
+        state.loadedPosts = posts;
       },
       addPost(state, post) {
-        state.loadedPosts.push(post)
+        state.loadedPosts.push(post);
       },
       editPost(state, editedPost) {
         const postIndex = state.loadedPosts.findIndex(
           post => post.id === editedPost.id
         )
-        state.loadedPosts[postIndex] = editedPost
+        state.loadedPosts[postIndex] = editedPost;
       },
       setToken(state, token) {
-        state.token = token
+        state.token = token;
       },
       clearToken(state) {
         state.token = null;
@@ -61,36 +61,35 @@ const createStore = () => {
           .catch(e => console.log(e))
       },
       authenticateUser(vuexContext, authData) {
-        let authUrl = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key='+ process.env.fbAPIKey
+        let authUrl =
+          'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key='+
+          process.env.fbAPIKey
         if(!authData.isLogin){
           authUrl= 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key='+
             process.env.fbAPIKey;
         }
         return this.$axios
           .$post(authUrl, {
-              email: authData.email,
-              password: authData.password,
-              returnSecureToken: true
+            email: authData.email,
+            password: authData.password,
+            returnSecureToken: true
           })
           .then(result => {
             vuexContext.commit('setToken', result.idToken)
             localStorage.setItem('token', result.idToken)
             localStorage.setItem(
               'tokenExpiration',
-              new Date().getTime() + result.expiresIn * 1000)
-            Cookie.set('jwt', result.idtoken)
+              new Date().getTime() + Number.parseInt(result.expiresIn) * 1000
+            );
+            Cookie.set('jwt', result.idToken)
             Cookie.set(
               'expirationDate',
-              new Date().getTime() + result.expiresIn * 1000)
-            vuexContext.dispatch('setLogoutTimer', result.expiresIn * 1000)
+              new Date().getTime() + Number.parseInt(result.expiresIn) * 1000
+            );
           })
           .catch(e => console.log(e))
       },
-      setLogoutTimer(vuexContext, duration) {
-        setTimeout(() => {
-          vuexContext.commit('clearToken')
-        } ,duration)
-      },
+
       initAuth(vuexContext, req) {
         let token;
         let expirationDate;
@@ -112,17 +111,24 @@ const createStore = () => {
         } else {
           token = localStorage.getItem('token')
           expirationDate = localStorage.getItem('tokenExpiration')
-
-          if (new Date().getTime() > +expirationDate || !token) {
-            return;
-          }
-
         }
-        vuexContext.dispatch('setLogoutTimer', +expirationDate - new Date().getTime())
+
+        if (new Date().getTime() > +expirationDate || !token) {
+          console.log('No token or invalid token');
+          vuexContext.dispatch('logout');
+          return;
+        }
         vuexContext.commit('setToken', token)
-
+      },
+      logout(vuexContext) {
+        vuexContext.commit('clearToken');
+        Cookie.remove('jwt');
+        Cookie.remove('expirationDate');
+        if (process.client) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('tokenExpiration');
+        }
       }
-
     },
     getters: {
       loadedPosts(state) {
